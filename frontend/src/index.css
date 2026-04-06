@@ -1,0 +1,12 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* WhatsApp-style chat bubble shapes */
+.chat-bubble-user {
+  border-radius: 18px 18px 4px 18px;
+}
+
+.chat-bubble-bot {
+  border-radius: 18px 18px 18px 4px;
+}
