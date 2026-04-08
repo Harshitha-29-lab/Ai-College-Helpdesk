@@ -38,9 +38,10 @@ function Chat() {
   }, [messages, isLoading])
 
   // ---------- Send message ----------
+  const API_URL = import.meta.env.VITE_API_URL || 'https://ai-college-helpdesk-ekty.onrender.com/api/chat';
   const sendMessage = async (text) => {
-    const trimmed = (text || input).trim()
-    if (!trimmed || isLoading) return
+    const trimmed = (text || input).trim();
+    if (!trimmed || isLoading) return;
 
     // Add user message immediately
     const userMsg = {
@@ -48,18 +49,18 @@ function Chat() {
       text: trimmed,
       sender: 'user',
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-    }
-    setMessages((prev) => [...prev, userMsg])
-    setInput('')
-    setIsLoading(true)
+    };
+    setMessages((prev) => [...prev, userMsg]);
+    setInput('');
+    setIsLoading(true);
 
     try {
-      const res = await fetch('http://localhost:8000/api/chat', {
+      const res = await fetch(API_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: trimmed }),
-      })
-      const data = await res.json()
+      });
+      const data = await res.json();
 
       const botMsg = {
         id: Date.now() + 1,
@@ -67,8 +68,8 @@ function Chat() {
         sender: 'bot',
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
         source: data.source,
-      }
-      setMessages((prev) => [...prev, botMsg])
+      };
+      setMessages((prev) => [...prev, botMsg]);
     } catch {
       const errorMsg = {
         id: Date.now() + 1,
@@ -76,12 +77,12 @@ function Chat() {
         sender: 'bot',
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
         source: 'error',
-      }
-      setMessages((prev) => [...prev, errorMsg])
+      };
+      setMessages((prev) => [...prev, errorMsg]);
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   // ---------- Handle Enter key ----------
   const handleKeyDown = (e) => {
